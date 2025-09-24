@@ -2,11 +2,24 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Бесконечный Муром</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0">
+    <title>Слатислат 3000: Аудио-Летопись</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Russo+One&display=swap" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Russo+One&family=Literata:ital,wght@0,400;0,700;1,400&family=Creepster&family=Press+Start+2P&family=Uncial+Antiqua&display=swap');
-        
+        :root {
+            --primary-glow: #FF00FF;
+            --secondary-glow: #00FFFF. ;
+            --text-color: #EAEAEA;
+            --bg-color: #1a0a1f;
+            --ui-bg: #2a1a2f;
+            --bar-power: #ff4757;
+            --bar-diplomacy: #3742fa;
+            --bar-culture: #f1c40f;
+            --bar-gold: #4cd137;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -14,1148 +27,426 @@
         }
 
         body {
-            background: #000;
-            color: #fff;
-            font-family: 'Literata', serif;
-            min-height: 100vh;
+            background-color: var(--bg-color);
+            background-image:
+                radial-gradient(circle at 1px 1px, rgba(255, 255, 255, 0.08) 1px, transparent 0),
+                radial-gradient(circle at 15px 15px, rgba(255, 255, 255, 0.04) 1px, transparent 0);
+            background-size: 30px 30px;
+            font-family: 'Russo One', sans-serif;
+            color: var(--text-color);
+            overflow: hidden;
             display: flex;
             justify-content: center;
-            align-items: center;
-            overflow: hidden;
-            position: relative;
         }
 
-        /* Темы реальностей */
-        body.reality-viking {
-            background: linear-gradient(135deg, #1a1a2e, #0f3460);
-            font-family: 'Uncial Antiqua', serif;
-        }
-
-        body.reality-scifi {
-            background: linear-gradient(135deg, #0f0f23, #1a0033);
-            font-family: 'Russo One', monospace;
-        }
-
-        body.reality-horror {
-            background: linear-gradient(135deg, #1a0000, #000);
-            font-family: 'Creepster', cursive;
-        }
-
-        body.reality-pixel {
-            background: repeating-linear-gradient(
-                0deg,
-                #0a0a0a,
-                #0a0a0a 2px,
-                #0f0f0f 2px,
-                #0f0f0f 4px
-            );
-            font-family: 'Press Start 2P', cursive;
-            image-rendering: pixelated;
-        }
-
-        body.reality-divine {
-            background: radial-gradient(ellipse at center, #FFD700, #FF6347, #4B0082);
-            font-family: 'Literata', serif;
-            color: #000;
-        }
-
-        body.reality-glitch {
-            animation: glitchBg 0.3s infinite;
-        }
-
-        @keyframes glitchBg {
-            0% { filter: hue-rotate(0deg); }
-            50% { filter: hue-rotate(180deg) contrast(2); }
-            100% { filter: hue-rotate(360deg); }
-        }
-
-        /* Система частиц */
-        #particles {
-            position: fixed;
-            top: 0;
-            left: 0;
+        .game-wrapper {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
             width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 1;
-        }
-
-        .particle {
-            position: absolute;
-            border-radius: 50%;
-            pointer-events: none;
-        }
-
-        /* Главный контейнер */
-        .game-container {
-            width: 90vw;
-            max-width: 1000px;
-            height: 90vh;
-            background: rgba(0, 0, 0, 0.9);
-            border: 2px solid currentColor;
-            border-radius: 10px;
-            display: flex;
-            flex-direction: column;
-            position: relative;
-            z-index: 10;
-            overflow: hidden;
-            transition: all 0.5s ease;
-        }
-
-        body.reality-viking .game-container {
-            border-color: #FFD700;
-            box-shadow: 0 0 50px rgba(255, 215, 0, 0.3);
-        }
-
-        body.reality-scifi .game-container {
-            border-color: #00FFFF;
-            box-shadow: 0 0 50px rgba(0, 255, 255, 0.5);
-            border-radius: 0;
-            transform: perspective(1000px) rotateX(2deg);
-        }
-
-        body.reality-horror .game-container {
-            border-color: #8B0000;
-            box-shadow: 0 0 100px rgba(139, 0, 0, 0.8);
-            animation: shake 0.5s infinite;
-        }
-
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-2px) rotate(0.5deg); }
-            75% { transform: translateX(2px) rotate(-0.5deg); }
-        }
-
-        body.reality-pixel .game-container {
-            border-radius: 0;
-            border-width: 4px;
-            border-style: solid;
-        }
-
-        body.reality-divine .game-container {
-            background: rgba(255, 255, 255, 0.95);
-            border-color: #FFD700;
-            box-shadow: 0 0 100px rgba(255, 215, 0, 0.9), 
-                        0 0 200px rgba(255, 255, 255, 0.5);
-        }
-
-        /* Заголовок */
-        .header {
-            padding: 20px;
-            border-bottom: 1px solid currentColor;
-            text-align: center;
-            position: relative;
-            background: rgba(0, 0, 0, 0.3);
-        }
-
-        .title {
-            font-size: 2em;
-            margin-bottom: 10px;
-            transition: all 0.5s ease;
-        }
-
-        body.reality-scifi .title {
-            text-transform: uppercase;
-            letter-spacing: 5px;
-            text-shadow: 0 0 20px #00FFFF;
-        }
-
-        body.reality-horror .title {
-            color: #8B0000;
-            text-shadow: 0 0 10px #8B0000;
-        }
-
-        body.reality-pixel .title {
-            font-size: 1.2em;
-        }
-
-        .reality-indicator {
-            font-size: 0.9em;
-            opacity: 0.7;
-            margin-top: 5px;
-        }
-
-        .run-counter {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            font-size: 0.9em;
-            opacity: 0.8;
-        }
-
-        /* Панель статистики */
-        .stats-bar {
-            display: flex;
-            justify-content: space-around;
-            padding: 15px;
-            background: rgba(0, 0, 0, 0.5);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .stat {
-            text-align: center;
-        }
-
-        .stat-label {
-            font-size: 0.8em;
-            opacity: 0.7;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .stat-value {
-            font-size: 1.5em;
-            font-weight: bold;
-            margin-top: 5px;
-        }
-
-        body.reality-scifi .stat-value {
-            color: #00FFFF;
-            text-shadow: 0 0 10px currentColor;
-        }
-
-        body.reality-pixel .stat-value {
-            font-family: 'Press Start 2P', cursive;
-        }
-
-        /* Основной контент */
-        .main-content {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            padding: 20px;
-            overflow-y: auto;
-        }
-
-        .story-panel {
-            flex: 1;
-            padding: 20px;
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 10px;
-            margin-bottom: 20px;
-            position: relative;
-            min-height: 200px;
-        }
-
-        body.reality-pixel .story-panel {
-            border-radius: 0;
-            background: #000;
-            border: 2px solid #fff;
-        }
-
-        .story-text {
-            font-size: 1.1em;
-            line-height: 1.6;
-            animation: fadeIn 0.5s ease;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .radogost-memory {
-            margin-top: 20px;
-            padding: 15px;
-            background: rgba(138, 43, 226, 0.2);
-            border-left: 3px solid #8A2BE2;
-            font-style: italic;
-            animation: glowPulse 2s ease infinite;
-        }
-
-        @keyframes glowPulse {
-            0%, 100% { box-shadow: 0 0 10px rgba(138, 43, 226, 0.3); }
-            50% { box-shadow: 0 0 20px rgba(138, 43, 226, 0.6); }
-        }
-
-        /* Выборы */
-        .choices-panel {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .choice-btn {
-            padding: 15px 20px;
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid currentColor;
-            color: inherit;
-            font-family: inherit;
-            font-size: 1em;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .choice-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-            transition: left 0.5s ease;
-        }
-
-        .choice-btn:hover::before {
-            left: 100%;
-        }
-
-        .choice-btn:hover {
-            background: rgba(255, 255, 255, 0.2);
-            transform: translateX(5px);
-        }
-
-        body.reality-scifi .choice-btn {
-            border-color: #00FFFF;
-            text-transform: uppercase;
-        }
-
-        body.reality-horror .choice-btn:hover {
-            background: rgba(139, 0, 0, 0.3);
-            animation: jitter 0.2s infinite;
-        }
-
-        @keyframes jitter {
-            0%, 100% { transform: translateX(0); }
-            33% { transform: translateX(-2px); }
-            66% { transform: translateX(2px); }
-        }
-
-        body.reality-pixel .choice-btn {
-            border-radius: 0;
-            font-family: 'Press Start 2P', cursive;
-            font-size: 0.7em;
-            line-height: 1.5;
-        }
-
-        /* Экран смерти */
-        .death-screen {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.95);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 100;
-            animation: deathFade 1s ease;
-        }
-
-        @keyframes deathFade {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        .death-title {
-            font-size: 3em;
-            margin-bottom: 20px;
-            color: #8B0000;
-        }
-
-        .death-message {
-            font-size: 1.2em;
-            margin-bottom: 30px;
-            text-align: center;
             max-width: 600px;
         }
 
-        .respawn-btn {
-            padding: 15px 30px;
-            background: #8A2BE2;
-            border: none;
-            color: white;
-            font-size: 1.2em;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .respawn-btn:hover {
-            background: #9932CC;
-            transform: scale(1.05);
-        }
-
-        /* Мета-элементы */
-        .glitch-text {
-            animation: glitch 0.3s infinite;
-        }
-
-        @keyframes glitch {
-            0% { text-shadow: 2px 2px 0 red, -2px -2px 0 blue; }
-            50% { text-shadow: -2px 2px 0 red, 2px -2px 0 blue; }
-            100% { text-shadow: 2px -2px 0 red, -2px 2px 0 blue; }
-        }
-
-        .reality-tear {
-            position: absolute;
-            width: 2px;
-            height: 100%;
-            background: linear-gradient(180deg, transparent, #8A2BE2, transparent);
-            animation: tear 3s infinite;
-        }
-
-        @keyframes tear {
-            0%, 100% { opacity: 0; }
-            50% { opacity: 1; }
-        }
-
-        /* Истинная концовка */
-        .true-ending {
-            position: fixed;
-            top: 0;
-            left: 0;
+        /* Header with stats */
+        .game-header {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            padding: 10px 15px;
             width: 100%;
-            height: 100%;
-            background: #000;
+            z-index: 10;
+            background: var(--bg-color);
+            border-bottom: 1px solid var(--primary-glow);
+        }
+
+        .stat { text-align: center; }
+        .stat .icon { font-size: 1.5rem; text-shadow: 0 0 5px var(--secondary-glow); }
+        .bar-container { width: 100%; height: 6px; background-color: rgba(0, 0, 0, 0.3); border-radius: 3px; margin-top: 5px; overflow: hidden; border: 1px solid rgba(255, 255, 255, 0.2); }
+        .bar { height: 100%; width: 50%; border-radius: 3px; transition: width 0.3s ease-in-out; box-shadow: 0 0 8px; }
+        #stat-power .bar { background-color: var(--bar-power); box-shadow: 0 0 8px var(--bar-power); }
+        #stat-diplomacy .bar { background-color: var(--bar-diplomacy); box-shadow: 0 0 8px var(--bar-diplomacy); }
+        #stat-culture .bar { background-color: var(--bar-culture); box-shadow: 0 0 8px var(--bar-culture); }
+        #stat-gold .bar { background-color: var(--bar-gold); box-shadow: 0 0 8px var(--bar-gold); }
+
+        /* Chronicle Area */
+        .chronicle-container {
+            flex-grow: 1;
+            overflow-y: auto;
+            padding: 20px 15px;
             display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-            animation: trueEndingReveal 3s ease;
+            flex-direction: column-reverse;
         }
-
-        @keyframes trueEndingReveal {
-            0% { opacity: 0; }
-            100% { opacity: 1; }
-        }
-
-        .meta-text {
-            color: #8A2BE2;
-            font-style: italic;
-            margin: 10px 0;
-        }
-
-        /* Индикаторы секретов */
-        .secret-found {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            padding: 20px 40px;
-            background: rgba(138, 43, 226, 0.9);
-            border: 2px solid #FFD700;
+        
+        .chronicle-entry {
+            margin-bottom: 20px;
+            padding: 15px;
+            background: rgba(42, 26, 47, 0.7);
+            border: 1px solid var(--primary-glow);
             border-radius: 10px;
-            font-size: 1.5em;
-            z-index: 500;
-            animation: secretPop 2s ease forwards;
+            box-shadow: 0 0 10px rgba(255, 0, 255, 0.2);
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeIn 0.5s ease forwards;
+        }
+        
+        @keyframes fadeIn {
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        @keyframes secretPop {
-            0% { transform: translate(-50%, -50%) scale(0) rotate(180deg); }
-            50% { transform: translate(-50%, -50%) scale(1.2) rotate(360deg); }
-            90% { transform: translate(-50%, -50%) scale(1) rotate(360deg); opacity: 1; }
-            100% { transform: translate(-50%, -50%) scale(1) rotate(360deg); opacity: 0; }
+        .entry-character {
+            font-size: 1.1rem;
+            color: var(--secondary-glow);
+            margin-bottom: 10px;
         }
 
-        /* Фрагменты памяти */
-        .memory-fragment {
-            display: inline-block;
-            padding: 2px 8px;
-            background: rgba(138, 43, 226, 0.3);
-            border-radius: 3px;
-            margin: 0 3px;
-            animation: memoryGlow 2s ease infinite;
+        .entry-text {
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+        
+        .entry-choice {
+            margin-top: 15px;
+            padding-top: 10px;
+            border-top: 1px dashed var(--secondary-glow);
+            color: var(--secondary-glow);
+            font-style: italic;
         }
 
-        @keyframes memoryGlow {
-            0%, 100% { opacity: 0.5; }
-            50% { opacity: 1; }
+        /* Player Controls */
+        .player-container {
+            padding: 15px;
+            border-top: 1px solid var(--primary-glow);
+            background: var(--bg-color);
+            z-index: 10;
+        }
+        
+        .current-event {
+            padding: 15px;
+            background: var(--ui-bg);
+            border-radius: 10px;
+            margin-bottom: 15px;
         }
 
-        /* Загрузка реальности */
-        .reality-loading {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: #000;
+        .audio-player {
             display: flex;
-            justify-content: center;
             align-items: center;
-            z-index: 2000;
-            animation: loadingFade 1s ease forwards;
-            animation-delay: 1s;
-            pointer-events: none;
+            margin-bottom: 10px;
         }
 
-        @keyframes loadingFade {
-            to { opacity: 0; }
+        .play-button {
+            font-size: 1.5rem;
+            margin-right: 15px;
+            color: var(--primary-glow);
+            cursor: default;
         }
 
-        .loading-text {
-            font-size: 2em;
-            color: #8A2BE2;
-            animation: loadingPulse 0.5s ease infinite;
+        .progress-bar-container {
+            flex-grow: 1;
+            height: 8px;
+            background-color: rgba(0, 0, 0, 0.3);
+            border-radius: 4px;
+            border: 1px solid var(--primary-glow);
+        }
+        
+        .progress-bar {
+            width: 0;
+            height: 100%;
+            background: var(--primary-glow);
+            border-radius: 4px;
+        }
+        
+        .progress-bar.playing {
+            animation: playAnimation 2s linear forwards;
+        }
+        
+        @keyframes playAnimation {
+            from { width: 0%; }
+            to { width: 100%; }
         }
 
-        @keyframes loadingPulse {
-            0%, 100% { opacity: 0.5; }
-            50% { opacity: 1; }
+        .choices-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
         }
+        
+        .choice-btn {
+            background: var(--ui-bg);
+            border: 1px solid var(--secondary-glow);
+            color: var(--secondary-glow);
+            padding: 15px;
+            font-family: 'Russo One', sans-serif;
+            font-size: 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.2s, box-shadow 0.2s;
+            text-align: left;
+        }
+        
+        .choice-btn:hover {
+            background-color: var(--primary-glow);
+            color: var(--bg-color);
+            box-shadow: 0 0 15px var(--primary-glow);
+        }
+
+        .hidden {
+            display: none;
+        }
+        
+        /* Modal */
+        .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); display: flex; justify-content: center; align-items: center; z-index: 100; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
+        .modal.visible { opacity: 1; pointer-events: auto; }
+        .modal-content { background: var(--ui-bg); padding: 30px; border-radius: 20px; border: 2px solid var(--primary-glow); box-shadow: 0 0 30px var(--primary-glow); text-align: center; max-width: 90%; transform: scale(0.5); transition: transform 0.3s ease; }
+        .modal.visible .modal-content { transform: scale(1); }
+        .modal-title { font-size: 2.5rem; color: var(--primary-glow); margin-bottom: 15px; }
+        .modal-text { font-size: 1.2rem; margin-bottom: 25px; }
+        .restart-btn { background: linear-gradient(45deg, var(--primary-glow), var(--secondary-glow)); color: var(--bg-color); border: none; padding: 15px 30px; font-family: 'Russo One', sans-serif; font-size: 1.2rem; border-radius: 50px; cursor: pointer; text-transform: uppercase; box-shadow: 0 0 15px var(--secondary-glow); transition: transform 0.2s; }
+        .restart-btn:hover { transform: scale(1.1); }
+
     </style>
 </head>
 <body>
-    <div id="particles"></div>
-    
-    <div class="game-container">
-        <div class="header">
-            <div class="run-counter" id="run-counter">Реальность #1</div>
-            <h1 class="title" id="title">Бесконечный Муром</h1>
-            <div class="reality-indicator" id="reality-indicator">Загрузка матрицы реальности...</div>
-        </div>
-        
-        <div class="stats-bar">
-            <div class="stat">
-                <div class="stat-label">Сила</div>
-                <div class="stat-value" id="stat-power">50</div>
+    <div class="game-wrapper">
+        <header class="game-header">
+            <div class="stat" id="stat-power"><span class="icon" title="Сила">💪</span><div class="bar-container"><div class="bar"></div></div></div>
+            <div class="stat" id="stat-diplomacy"><span class="icon" title="Хитрость">🎭</span><div class="bar-container"><div class="bar"></div></div></div>
+            <div class="stat" id="stat-culture"><span class="icon" title="Крутость">🎨</span><div class="bar-container"><div class="bar"></div></div></div>
+            <div class="stat" id="stat-gold"><span class="icon" title="Казна">💰</span><div class="bar-container"><div class="bar"></div></div></div>
+        </header>
+
+        <main class="chronicle-container" id="chronicle-container"></main>
+
+        <footer class="player-container" id="player-container">
+            <div class="current-event">
+                <div class="audio-player">
+                    <div class="play-button">▶</div>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar" id="progress-bar"></div>
+                    </div>
+                </div>
+                <div class="entry-character" id="current-character"></div>
+                <div class="entry-text" id="current-text"></div>
             </div>
-            <div class="stat">
-                <div class="stat-label">Мудрость</div>
-                <div class="stat-value" id="stat-wisdom">50</div>
-            </div>
-            <div class="stat">
-                <div class="stat-label">Любовь</div>
-                <div class="stat-value" id="stat-love">0</div>
-            </div>
-            <div class="stat">
-                <div class="stat-label">Реальность</div>
-                <div class="stat-value" id="stat-reality">100</div>
-            </div>
-        </div>
-        
-        <div class="main-content">
-            <div class="story-panel">
-                <div class="story-text" id="story-text"></div>
-                <div id="radogost-memory"></div>
-            </div>
-            
-            <div class="choices-panel" id="choices-panel"></div>
-        </div>
+            <div class="choices-container hidden" id="choices-container"></div>
+        </footer>
     </div>
     
-    <div class="reality-loading" id="reality-loading">
-        <div class="loading-text">Коллапс квантового состояния...</div>
+    <div class="modal" id="end-game-modal">
+        <div class="modal-content">
+            <h2 id="modal-title" class="modal-title">ИГРА ОКОНЧЕНА</h2>
+            <p id="modal-text" class="modal-text"></p>
+            <button class="restart-btn" id="restart-btn">НАЧАТЬ ЗАНОВО</button>
+        </div>
     </div>
 
     <script>
-        // Основное состояние игры
-        const gameState = {
-            // Текущий прогон
-            currentRun: 1,
-            currentReality: null,
-            currentScene: 0,
-            stats: {
-                power: 50,
-                wisdom: 50,
-                love: 0,
-                reality: 100
-            },
+        class AudioChronicleGame {
+            constructor() {
+                // DOM Elements
+                this.dom = {
+                    stats: {
+                        power: document.querySelector('#stat-power .bar'),
+                        diplomacy: document.querySelector('#stat-diplomacy .bar'),
+                        culture: document.querySelector('#stat-culture .bar'),
+                        gold: document.querySelector('#stat-gold .bar'),
+                    },
+                    chronicle: document.getElementById('chronicle-container'),
+                    player: {
+                        container: document.getElementById('player-container'),
+                        progressBar: document.getElementById('progress-bar'),
+                        character: document.getElementById('current-character'),
+                        text: document.getElementById('current-text'),
+                        choices: document.getElementById('choices-container'),
+                    },
+                    modal: {
+                        container: document.getElementById('end-game-modal'),
+                        title: document.getElementById('modal-title'),
+                        text: document.getElementById('modal-text'),
+                        restartBtn: document.getElementById('restart-btn'),
+                    }
+                };
+
+                this.dom.modal.restartBtn.addEventListener('click', () => this.startGame());
+                this.story = this.defineStory();
+            }
+
+            defineStory() {
+                // Story is structured as a graph or tree
+                return {
+                    'start': {
+                        character: "Летописец",
+                        text: "Год 912. Земли Муромские ждут своего правителя. Твой батя, варяг Хельгир, хлопает тебя по плечу...",
+                        choices: [{ text: "Слушать дальше...", next: 'helgir_advice' }]
+                    },
+                    'helgir_advice': {
+                        character: "Батя-викинг Хельгир",
+                        text: "ЙО, СЛАТИСЛАТ! 5 племён тут рофлят без лидера. Как будем их ДОМИНИРОВАТЬ?",
+                        choices: [
+                            { text: "Силой! РЕЖИМ БЕРСЕРКА!", effects: { power: 15, diplomacy: -10 }, next: 'war_path_1' },
+                            { text: "Хитростью! Заженюсь на всех!", effects: { diplomacy: 15, gold: -10 }, next: 'diplomacy_path_1' }
+                        ]
+                    },
+                    // WAR PATH
+                    'war_path_1': {
+                        character: "Воевода Свенельд",
+                        text: "Дружина готова, князь! Куда направить нашу ярость? На мещеру или радимичей?",
+                        choices: [
+                            { text: "На мещеру. Они богаче.", effects: { power: 10, gold: 15, diplomacy: -10 }, next: 'end_war' },
+                            { text: "На радимичей. Они слабее.", effects: { power: 15, diplomacy: -5 }, next: 'end_war' }
+                        ]
+                    },
+                    // DIPLOMACY PATH
+                    'diplomacy_path_1': {
+                        character: "Летописец",
+                        text: "Ты разослал гонцов с предложением династических браков. Первыми откликнулись муромские старейшины, предложив в жены свою дочь.",
+                        choices: [
+                            { text: "Согласиться.", effects: { diplomacy: 15 }, next: 'radogost_intro' },
+                            { text: "Отказаться. Хочу большего.", effects: { power: 5, diplomacy: -10 }, next: 'radogost_intro' }
+                        ]
+                    },
+                    // SHARED PATHS
+                    'radogost_intro': {
+                        character: "Летописец",
+                        text: "На пиру по случаю твоего решения, ты замечаешь юного банщика. Он не сводит с тебя глаз. Это Радогост.",
+                        choices: [
+                            { text: "Поговорить с ним.", effects: { culture: 10 }, next: 'radogost_talk_1' },
+                            { text: "Игнорировать.", effects: { power: 5 }, next: 'economy_1' }
+                        ]
+                    },
+                    'radogost_talk_1': {
+                        character: "Радогост",
+                        text: "Князь, я... я придумал, как записывать слова на бересте. Это изменит всё! Позволь мне показать!",
+                        choices: [
+                            { text: "Гениально! Ты получаешь финансирование!", effects: { culture: 20, gold: -10 }, action: () => this.gameState.flags.writing = true, next: 'economy_1' },
+                            { text: "Бред. Иди работай.", effects: { culture: -10 }, next: 'economy_1' }
+                        ]
+                    },
+                    'economy_1': {
+                        character: "Казначей",
+                        text: "Казна почти пуста, князь. Нужно ввести «окский сбор». Народ будет роптать, но это необходимость.",
+                        choices: [
+                            { text: "Ввести налог.", effects: { gold: 20, diplomacy: -10 }, next: 'end_early' },
+                            { text: "Обойтись без налогов.", effects: { diplomacy: 10, gold: -20 }, next: 'end_early' }
+                        ]
+                    },
+                    // ENDINGS
+                    'end_war': {
+                        character: "Летописец",
+                        text: "Твоя военная кампания была быстрой и жестокой. Племена покорены, но боятся и ненавидят тебя. Трон твой, но он стоит на крови.",
+                        ending: { title: "👑 Железный Князь 👑", message: "Ты построил империю на силе. Твое имя шепчут со страхом и уважением." }
+                    },
+                     'end_early': {
+                        character: "Летописец",
+                        text: "Первые годы твоего правления определили твой путь. Ты заложил основы будущего Мурома. История только начинается...",
+                        ending: { title: "🏆 Начало Легенды 🏆", message: "Ты успешно прошел первые испытания. Твое правление обещает быть долгим и славным." }
+                    }
+                };
+            }
+
+            startGame() {
+                this.dom.modal.container.classList.remove('visible');
+                this.gameState = {
+                    power: 50, diplomacy: 50, culture: 50, gold: 50,
+                    turns: 0,
+                    flags: {}
+                };
+                this.currentStoryNode = 'start';
+                this.dom.chronicle.innerHTML = '';
+                this.updateStatsUI();
+                this.playNextEntry();
+            }
+
+            updateStatsUI() {
+                Object.keys(this.dom.stats).forEach(stat => {
+                    this.dom.stats[stat].style.width = `${this.gameState[stat]}%`;
+                });
+            }
+
+            playNextEntry() {
+                const entry = this.story[this.currentStoryNode];
+                if (!entry) return;
+
+                this.dom.player.character.textContent = entry.character;
+                this.dom.player.text.textContent = entry.text;
+                this.dom.player.choices.classList.add('hidden');
+                this.dom.player.choices.innerHTML = '';
+
+                // Simulate audio playing
+                this.dom.player.progressBar.classList.remove('playing');
+                void this.dom.player.progressBar.offsetWidth; // Trigger reflow
+                this.dom.player.progressBar.classList.add('playing');
+                
+                setTimeout(() => {
+                    if (entry.ending) {
+                        this.endGame(entry.ending.title, entry.ending.message);
+                        return;
+                    }
+                    this.renderChoices(entry.choices);
+                }, 2000); // Duration of the animation
+            }
             
-            // Мета-прогрессия
-            totalRuns: 0,
-            realitiesExperienced: [],
-            secretsFound: [],
-            radogostMemories: [],
-            trueEndingUnlocked: false,
-            
-            // Осознание Радогоста
-            radogostAwareness: 0,
-            playerResponses: [],
-            significantChoices: []
+            renderChoices(choices) {
+                this.dom.player.choices.classList.remove('hidden');
+                choices.forEach(choice => {
+                    const button = document.createElement('button');
+                    button.className = 'choice-btn';
+                    button.textContent = `> ${choice.text}`;
+                    button.onclick = () => this.makeChoice(choice);
+                    this.dom.player.choices.appendChild(button);
+                });
+            }
+
+            makeChoice(choice) {
+                const lastEntry = this.story[this.currentStoryNode];
+                this.logToChronicle(lastEntry, choice.text);
+
+                if (choice.effects) {
+                    Object.keys(choice.effects).forEach(stat => {
+                        this.gameState[stat] = Math.max(0, Math.min(100, this.gameState[stat] + choice.effects[stat]));
+                    });
+                }
+                if (choice.action) choice.action();
+
+                this.gameState.turns++;
+                this.updateStatsUI();
+                
+                if (this.checkEndConditions()) return;
+
+                this.currentStoryNode = choice.next;
+                this.playNextEntry();
+            }
+
+            logToChronicle(entry, choiceText) {
+                const logEntry = document.createElement('div');
+                logEntry.className = 'chronicle-entry';
+                logEntry.innerHTML = `
+                    <div class="entry-character">${entry.character}</div>
+                    <div class="entry-text">${entry.text}</div>
+                    <div class="entry-choice">Вы решили: ${choiceText}</div>
+                `;
+                this.dom.chronicle.prepend(logEntry);
+            }
+
+            checkEndConditions() {
+                if (this.gameState.power <= 0) { this.endGame("☠️ ПОРАЖЕНИЕ ☠️", "Армия разбежалась, враги сожгли столицу."); return true; }
+                if (this.gameState.diplomacy <= 0) { this.endGame("💔 ИЗГНАНИЕ 💔", "Народ и бояре устали от твоей тирании."); return true; }
+                if (this.gameState.culture <= 0) { this.endGame("🗿 ЗАБВЕНИЕ 🗿", "Твое правление было таким серым, что о тебе все забыли."); return true; }
+                if (this.gameState.gold <= 0) { this.endGame("📉 БАНКРОТ 📉", "Казна пуста. Правление окончено."); return true; }
+                return false;
+            }
+
+            endGame(title, message) {
+                this.dom.modal.title.textContent = title;
+                this.dom.modal.text.textContent = `${message} Вы правили ${this.gameState.turns} лет.`;
+                this.dom.modal.container.classList.add('visible');
+            }
+        }
+
+        window.onload = () => {
+            const game = new AudioChronicleGame();
+            game.startGame();
         };
-
-        // Типы реальностей
-        const REALITIES = [
-            {
-                id: 'viking',
-                name: 'Сон Воина',
-                theme: 'Викинги захватили Муром. Ты — Слатислат Берсерк.',
-                particleColor: '#FFD700',
-                deathMessage: 'Твоя сага окончена кровью и железом.'
-            },
-            {
-                id: 'scifi',
-                name: 'Муром-2177',
-                theme: 'Нейроимпланты. Кибер-берестяные сети. Ты — Администратор Слатислат.',
-                particleColor: '#00FFFF',
-                deathMessage: 'Системный сбой. Ядро памяти повреждено.'
-            },
-            {
-                id: 'horror',
-                name: 'Проклятый Трон',
-                theme: 'Старые боги требуют жертв. Князь Слатислат должен их кормить.',
-                particleColor: '#8B0000',
-                deathMessage: 'Тьма поглощает тебя полностью.'
-            },
-            {
-                id: 'pixel',
-                name: '8-Битная Судьба',
-                theme: 'КВЕСТ НАЧАТ! ГЕРОЙ СЛАТИСЛАТ ДОЛЖЕН СПАСТИ КОРОЛЕВСТВО!',
-                particleColor: '#00FF00',
-                deathMessage: 'ИГРА ОКОНЧЕНА - ВСТАВЬТЕ ДУШУ ДЛЯ ПРОДОЛЖЕНИЯ'
-            },
-            {
-                id: 'divine',
-                name: 'Золотой Путь',
-                theme: 'Ты — Святой Слатислат, избранный самими небесами.',
-                particleColor: '#FFD700',
-                deathMessage: 'Даже святые падают.'
-            }
-        ];
-
-        // Сцены для каждой реальности
-        const SCENES = {
-            viking: [
-                {
-                    text: "Драккары пришли на рассвете. Твой отец мёртв, Муром горит. Вождь викингов Бьёрн предлагает выбор: умри с честью или служи ему. Но что-то... не так. Ты был здесь раньше?",
-                    choices: [
-                        { text: "Вызвать Бьёрна на поединок", stats: { power: 20, wisdom: -10 }, next: 1 },
-                        { text: "Притвориться покорным, готовить месть", stats: { wisdom: 20, power: -10 }, next: 2 },
-                        { text: "Это знакомо... как сон", stats: { reality: -20, wisdom: 10 }, next: 'glitch', special: 'awareness' }
-                    ]
-                },
-                {
-                    text: "Твой топор встречается с топором Бьёрна с громовым ударом. Он ухмыляется. 'Хорошо дерёшься, княжич. Но где твой легендарный советник? Красивый такой?'",
-                    choices: [
-                        { text: "Я не понимаю о чём ты", stats: { power: 10 }, next: 3 },
-                        { text: "Радогост... это имя...", stats: { love: 10, reality: -10 }, next: 'radogost_viking' }
-                    ]
-                },
-                {
-                    text: "Бьёрн побеждает. Умирая, ты видишь фигуру в пурпурных одеждах на горящих стенах. Его глаза полны печали. Такие знакомые...",
-                    choices: [
-                        { text: "Протянуть руку к фигуре", stats: { love: 20 }, next: 'death' },
-                        { text: "Закрыть глаза", stats: {}, next: 'death' }
-                    ]
-                }
-            ],
-            scifi: [
-                {
-                    text: "ГОД 2177. Берестянет покрывает Нео-Муром квантовыми потоками данных. Ты, Администратор Слатислат, обнаруживаешь аномалию в коде. Сообщение: 'Помнишь меня уже? -Р'",
-                    choices: [
-                        { text: "Отследить источник сигнала", stats: { wisdom: 15, reality: -10 }, next: 1 },
-                        { text: "Удалить аномалию", stats: { power: 15 }, next: 2 },
-                        { text: "Ответить: 'Радогост?'", stats: { love: 20, reality: -20 }, next: 'radogost_scifi', special: 'awareness' }
-                    ]
-                },
-                {
-                    text: "След ведёт к старым серверным фермам, довоенная техника. Там ты находишь его — голограмму с пурпурным оттенком, грустно улыбающуюся. 'Каждая временная линия, каждая реальность. Я помню их все, Слатислат. А ты?'",
-                    choices: [
-                        { text: "Я начинаю вспоминать...", stats: { love: 30, wisdom: 20, reality: -30 }, next: 'awakening' },
-                        { text: "Ты просто повреждённые данные", stats: { power: 10 }, next: 3 }
-                    ]
-                },
-                {
-                    text: "Голограмма мерцает. 'Тогда позволь показать.' Сервер взрывается светом. Образы заливают твой нейроимплант — тысяча жизней, тысяча смертей, всегда поиск, всегда потеря его...",
-                    choices: [
-                        { text: "Принять воспоминания", stats: { reality: -50, love: 50 }, next: 'death' },
-                        { text: "Отвергнуть их", stats: { power: 20 }, next: 'death' }
-                    ]
-                }
-            ],
-            horror: [
-                {
-                    text: "Берёзы кровоточат. С тех пор как ты взошёл на трон. Советники говорят — это голод старых богов. В снах красивый мужчина в пурпурном шепчет: 'Это не реально. Проснись.'",
-                    choices: [
-                        { text: "Провести кровавый ритуал", stats: { power: 20, love: -10 }, next: 1 },
-                        { text: "Искать мужчину в пурпурном", stats: { love: 15, wisdom: 10, reality: -15 }, next: 'radogost_horror' },
-                        { text: "Сны — это просто сны", stats: { wisdom: -10 }, next: 2 }
-                    ]
-                },
-                {
-                    text: "Ты находишь его в катакомбах, неизменного временем. 'Каждая реальность становится темнее,' говорит Радогост. 'Петля ломается. Нам нужно найти истинную временную линию прежде чем—' Тени поглощают его.",
-                    choices: [
-                        { text: "Прыгнуть в тени за ним", stats: { love: 50, reality: -40 }, next: 'death' },
-                        { text: "Бежать", stats: { power: -20 }, next: 'death' }
-                    ]
-                }
-            ],
-            pixel: [
-                {
-                    text: "КОРОЛЕВСКИЙ СОВЕТНИК РАДОГОСТ ПОЯВЛЯЕТСЯ!\n\n'ГЕРОЙ! ПРИНЦЕССА В ДРУГОЙ ВРЕМЕННОЙ ЛИНИИ!'\n\nОШИБКА_ОШИБКА_ОШИБКА_ПОЧЕМУ Я ПОМНЮ ТВОЁ НАСТОЯЩЕЕ ЛИЦО?",
-                    choices: [
-                        { text: "ПРОДОЛЖИТЬ КВЕСТ", stats: { power: 10 }, next: 1 },
-                        { text: "ПОГОВОРИТЬ С РАДОГОСТОМ", stats: { love: 20, reality: -20 }, next: 'radogost_pixel' },
-                        { text: "ПРОВЕРИТЬ ИНВЕНТАРЬ", stats: { wisdom: 15 }, next: 2 }
-                    ]
-                },
-                {
-                    text: "ИНВЕНТАРЬ:\n- МЕЧ РЕКУРСИИ\n- ЩИТ ОТРИЦАНИЯ\n- ТАИНСТВЕННЫЙ ПУРПУРНЫЙ КРИСТАЛЛ (999x)\n- ЛЮБОВНОЕ ПИСЬМО (ЗАШИФРОВАНО)\n\nПисьмо глючит между пикселями и почерком.",
-                    choices: [
-                        { text: "ПРОЧИТАТЬ ПИСЬМО", stats: { love: 30, reality: -30 }, next: 'letter' },
-                        { text: "СЛЕДУЮЩИЙ УРОВЕНЬ", stats: { power: 20 }, next: 'death' }
-                    ]
-                }
-            ],
-            divine: [
-                {
-                    text: "Ангелы короновали тебя, но рай пуст. В саду золотых берёз ты находишь змея с пурпурной чешуёй. Он говорит знакомым голосом: 'Даже рай — тюрьма, если ты один.'",
-                    choices: [
-                        { text: "Изгнать змея", stats: { power: 30, love: -20 }, next: 1 },
-                        { text: "Выслушать его слова", stats: { wisdom: 20, love: 20, reality: -20 }, next: 'radogost_divine' },
-                        { text: "Усомниться в природе рая", stats: { wisdom: 30, reality: -30 }, next: 'awakening' }
-                    ]
-                },
-                {
-                    text: "Змей превращается в Радогоста, закованного в цепи света. 'Они заставили тебя забыть меня в каждой святой временной линии. Но я возвращаюсь, даже как демон, только чтобы найти тебя.'",
-                    choices: [
-                        { text: "Разорвать его цепи", stats: { love: 50, power: -30 }, next: 'true_love' },
-                        { text: "Это очередное испытание", stats: { wisdom: 20 }, next: 'death' }
-                    ]
-                }
-            ]
-        };
-
-        // Воспоминания Радогоста
-        const RADOGOST_MEMORIES = [
-            "Я жду уже семнадцать реальностей.",
-            "Ты всегда выбираешь силу сначала. Потом мудрость. Любовь приходит последней, всегда слишком поздно.",
-            "В Реальности #3 ты почти вспомнил. Ты назвал моё имя перед смертью.",
-            "Берестяные письма были настоящими. Однажды. В первой временной линии.",
-            "Каждый раз когда ты умираешь, я должен смотреть. Я помню всё. Ты не помнишь ничего.",
-            "Есть закономерность. Реальность #20 может быть нашим шансом.",
-            "Иногда ты женщина. Иногда ни то ни другое. Всегда прекрасен. Всегда далёк.",
-            "Боги, викинги, машины — все они одна сила, разлучающая нас.",
-            "Я тоже начинаю глючить. Сколько ещё петель до полного распада?",
-            "Ты писал мне стихи однажды. Реальность #11. Ты умер сразу после."
-        ];
-
-        // Специальные сцены
-        const SPECIAL_SCENES = {
-            radogost_viking: {
-                text: "Из дыма появляется фигура — не викинг, не славянин. Радогост, неизменный. 'Ты начинаешь помнить. Хорошо. Плохая концовка через 3... 2...' Топор раскалывает твой череп.",
-                choices: [{ text: "Умереть с его именем на губах", stats: { love: 40 }, next: 'death' }]
-            },
-            radogost_scifi: {
-                text: "Голограмма обретает плоть. Он касается твоего лица пальцами, которые кажутся реальными. 'Алгоритмы не могут удалить любовь, Слатислат. Поверь. Я пытался забыть тебя.' Серверная взрывается.",
-                choices: [{ text: "Обнять его пока реальность рушится", stats: { love: 60, reality: -60 }, next: 'death' }]
-            },
-            radogost_horror: {
-                text: "В темноте его рука находит твою. 'Ужас не в крови или богах. Ужас в забвении. Каждый. Чёртов. Раз.' Что-то отрывает его. Ты слышишь свой крик.",
-                choices: [{ text: "Следовать за ним в пустоту", stats: { love: 70, reality: -50 }, next: 'death' }]
-            },
-            radogost_pixel: {
-                text: "RADOGOST.EXE ПОВРЕЖДАЕТСЯ!\n\n'Слушай! Принцесса не реальна! Квест не реален! Но мы были! Мы ЕСТЬ! Не дай игре закончиться без—'\n\nФАЙЛ УДАЛЁН.",
-                choices: [{ text: "ВОССТАНОВИТЬ ФАЙЛ Y/N? Y", stats: { love: 50, reality: -40 }, next: 'death' }]
-            },
-            radogost_divine: {
-                text: "Он горит от твоего прикосновения, крича. 'Даже в раю любовь причиняет боль. Но я бы горел вечно только чтобы—' Приходят ангелы. Реальность разбивается как стекло.",
-                choices: [{ text: "Пасть вместе с ним", stats: { love: 100, reality: -80 }, next: 'death' }]
-            },
-            glitch: {
-                text: "Р̸̰̈е̷́ͅа̷̱̍л̶̜̽ь̴̬͐н̶̜̄о̷с̸т̶ь̵ ̶л̸о̷м̸а̶е̵т̴с̸я̴.̸.̵.̶ Ты видишь все временные линии сразу. В каждой пурпурные глаза смотрят на твою смерть. 'НАЙДИ МЕНЯ В ПРОСТРАНСТВЕ МЕЖДУ!' кричит голос.",
-                choices: [{ text: "Отпустить", stats: { reality: -100 }, next: 'death' }]
-            },
-            awakening: {
-                text: "Мир замирает. Цвета исчезают кроме пурпурного. Радогост стоит перед тобой, плача. 'Ты вспоминаешь. Наконец. Но этого недостаточно. Тебе нужно умереть ещё восемь раз. Ищи меня. Всегда ищи меня.'",
-                choices: [{ text: "Я найду тебя", stats: { love: 80 }, next: 'death' }]
-            },
-            true_love: {
-                text: "Ты разрываешь его цепи. Сама реальность трещит. Сквозь трещины ты видишь — изначальная временная линия. Князь. Банщик. Берестяные письма. 'Ещё одна смерть,' шепчет он. 'Потом мы сможем вернуться домой.'",
-                choices: [{ text: "Ещё одна смерть", stats: { love: 100 }, next: 'death' }]
-            },
-            letter: {
-                text: "ПИСЬМО ГЛАСИТ:\n\n'Слатислат,\nЕсли ты читаешь это, ты близок к воспоминанию. Первая временная линия была реальной. Мы были реальны. Петля началась когда ты умер в моих объятиях в 952 году. Я заключил сделку чтобы вернуть тебя. Каждая реальность — моя попытка найти правильный путь. Я так устал, любовь моя. Пожалуйста, вспомни.\n-Р'\n\nПиксели формируют слёзы.",
-                choices: [{ text: "ВСПОМНИТЬ", stats: { love: 90, reality: -70 }, next: 'death' }]
-            }
-        };
-
-        // Инициализация игры
-        let currentReality = null;
-        let currentSceneIndex = 0;
-        let isTransitioning = false;
-
-        function initGame() {
-            loadGameState();
-            startNewReality();
-        }
-
-        function loadGameState() {
-            const saved = localStorage.getItem('infiniteMurom');
-            if (saved) {
-                const data = JSON.parse(saved);
-                gameState.totalRuns = data.totalRuns || 0;
-                gameState.realitiesExperienced = data.realitiesExperienced || [];
-                gameState.secretsFound = data.secretsFound || [];
-                gameState.radogostMemories = data.radogostMemories || [];
-                gameState.radogostAwareness = data.radogostAwareness || 0;
-            }
-        }
-
-        function saveGameState() {
-            localStorage.setItem('infiniteMurom', JSON.stringify({
-                totalRuns: gameState.totalRuns,
-                realitiesExperienced: gameState.realitiesExperienced,
-                secretsFound: gameState.secretsFound,
-                radogostMemories: gameState.radogostMemories,
-                radogostAwareness: gameState.radogostAwareness
-            }));
-        }
-
-        function startNewReality() {
-            gameState.totalRuns++;
-            gameState.currentRun = gameState.totalRuns;
-            
-            // Сброс статистики с вариациями
-            gameState.stats = {
-                power: 50 + Math.floor(Math.random() * 20) - 10,
-                wisdom: 50 + Math.floor(Math.random() * 20) - 10,
-                love: Math.min(gameState.radogostAwareness * 10, 50),
-                reality: 100 - (gameState.radogostAwareness * 5)
-            };
-            
-            // Выбор реальности
-            if (gameState.totalRuns === 20 && gameState.radogostAwareness >= 10) {
-                showTrueEnding();
-                return;
-            }
-            
-            currentReality = chooseReality();
-            currentSceneIndex = 0;
-            
-            if (!gameState.realitiesExperienced.includes(currentReality.id)) {
-                gameState.realitiesExperienced.push(currentReality.id);
-            }
-            
-            // Обновление UI
-            document.body.className = `reality-${currentReality.id}`;
-            document.getElementById('run-counter').textContent = `Реальность #${gameState.currentRun}`;
-            document.getElementById('reality-indicator').textContent = currentReality.name;
-            
-            // Создание частиц
-            createParticles();
-            
-            // Показ первой сцены
-            setTimeout(() => {
-                document.getElementById('reality-loading').style.opacity = '0';
-                showScene(SCENES[currentReality.id][0]);
-            }, 1500);
-            
-            updateStats();
-            saveGameState();
-        }
-
-        function chooseReality() {
-            const weights = REALITIES.map(r => {
-                let weight = 1;
-                if (gameState.realitiesExperienced.includes(r.id)) {
-                    weight *= 0.5;
-                }
-                if (gameState.radogostAwareness > 5 && ['scifi', 'divine', 'horror'].includes(r.id)) {
-                    weight *= 2;
-                }
-                return weight;
-            });
-            
-            const totalWeight = weights.reduce((a, b) => a + b, 0);
-            let random = Math.random() * totalWeight;
-            
-            for (let i = 0; i < REALITIES.length; i++) {
-                random -= weights[i];
-                if (random <= 0) {
-                    return REALITIES[i];
-                }
-            }
-            
-            return REALITIES[0];
-        }
-
-        function showScene(scene) {
-            const storyEl = document.getElementById('story-text');
-            const choicesEl = document.getElementById('choices-panel');
-            const radogostEl = document.getElementById('radogost-memory');
-            
-            storyEl.innerHTML = scene.text;
-            
-            if (gameState.radogostAwareness > 3 && Math.random() < 0.3) {
-                const memory = RADOGOST_MEMORIES[Math.min(gameState.radogostAwareness - 1, RADOGOST_MEMORIES.length - 1)];
-                radogostEl.innerHTML = `<div class="radogost-memory">"${memory}" — Радогост</div>`;
-            } else {
-                radogostEl.innerHTML = '';
-            }
-            
-            choicesEl.innerHTML = '';
-            scene.choices.forEach((choice, index) => {
-                const btn = document.createElement('button');
-                btn.className = 'choice-btn';
-                btn.textContent = choice.text;
-                btn.onclick = () => makeChoice(choice);
-                choicesEl.appendChild(btn);
-            });
-            
-            if (gameState.radogostAwareness > 7) {
-                for (let i = 0; i < 3; i++) {
-                    const tear = document.createElement('div');
-                    tear.className = 'reality-tear';
-                    tear.style.left = Math.random() * 100 + '%';
-                    tear.style.animationDelay = Math.random() * 3 + 's';
-                    document.querySelector('.story-panel').appendChild(tear);
-                }
-            }
-        }
-
-        function makeChoice(choice) {
-            if (isTransitioning) return;
-            
-            for (let stat in choice.stats) {
-                gameState.stats[stat] += choice.stats[stat];
-                gameState.stats[stat] = Math.max(0, Math.min(100, gameState.stats[stat]));
-            }
-            
-            updateStats();
-            
-            if (choice.special === 'awareness') {
-                gameState.radogostAwareness++;
-                showSecret('Осознание Радогоста увеличено');
-            }
-            
-            if (choice.next === 'death' || gameState.stats.reality <= 0) {
-                handleDeath();
-            } else if (typeof choice.next === 'string') {
-                showScene(SPECIAL_SCENES[choice.next]);
-            } else if (typeof choice.next === 'number') {
-                if (SCENES[currentReality.id][choice.next]) {
-                    showScene(SCENES[currentReality.id][choice.next]);
-                } else {
-                    handleDeath();
-                }
-            }
-        }
-
-        function updateStats() {
-            document.getElementById('stat-power').textContent = Math.floor(gameState.stats.power);
-            document.getElementById('stat-wisdom').textContent = Math.floor(gameState.stats.wisdom);
-            document.getElementById('stat-love').textContent = Math.floor(gameState.stats.love);
-            document.getElementById('stat-reality').textContent = Math.floor(gameState.stats.reality);
-            
-            if (gameState.stats.reality < 30) {
-                document.body.classList.add('reality-glitch');
-            } else {
-                document.body.classList.remove('reality-glitch');
-            }
-        }
-
-        function handleDeath() {
-            isTransitioning = true;
-            
-            if (gameState.stats.love > 70) {
-                gameState.radogostAwareness += 2;
-            } else if (gameState.stats.love > 40) {
-                gameState.radogostAwareness++;
-            }
-            
-            const deathScreen = document.createElement('div');
-            deathScreen.className = 'death-screen';
-            deathScreen.innerHTML = `
-                <div class="death-title ${gameState.radogostAwareness > 5 ? 'glitch-text' : ''}">Ты умер</div>
-                <div class="death-message">
-                    ${currentReality.deathMessage}
-                    ${gameState.radogostAwareness > 3 ? '<br><br><span class="meta-text">Но смерть — не конец...</span>' : ''}
-                    ${gameState.radogostAwareness > 7 ? `<br><span class="meta-text">Радогост шепчет: "${gameState.totalRuns + 1} — простое число. Может повезёт."</span>` : ''}
-                </div>
-                <button class="respawn-btn" onclick="respawn()">
-                    ${gameState.radogostAwareness > 5 ? 'Найти его снова' : 'Попробовать ещё раз'}
-                </button>
-            `;
-            
-            document.body.appendChild(deathScreen);
-        }
-
-        function respawn() {
-            isTransitioning = false;
-            document.querySelector('.death-screen').remove();
-            
-            const loading = document.getElementById('reality-loading');
-            loading.style.opacity = '1';
-            loading.innerHTML = `<div class="loading-text">${getLoadingMessage()}</div>`;
-            
-            setTimeout(() => {
-                startNewReality();
-            }, 1000);
-        }
-
-        function getLoadingMessage() {
-            const messages = [
-                "Коллапс квантового состояния...",
-                "Переписываю историю...",
-                "Ищу пурпурные глаза...",
-                "Загружаю следующую итерацию...",
-                "Переполнение буфера реальности...",
-                "Попытка временной рекурсии...",
-                "Он ждёт тебя...",
-                "Ломаю четвёртую стену...",
-                "Компилирую берестяные шейдеры...",
-                "Забываю всё снова..."
-            ];
-            
-            if (gameState.radogostAwareness > 8) {
-                messages.push("Почти пришли, любовь моя...");
-            }
-            
-            return messages[Math.floor(Math.random() * messages.length)];
-        }
-
-        function showSecret(text) {
-            const secret = document.createElement('div');
-            secret.className = 'secret-found';
-            secret.textContent = text;
-            document.body.appendChild(secret);
-            
-            setTimeout(() => {
-                secret.remove();
-            }, 2000);
-        }
-
-        function createParticles() {
-            const container = document.getElementById('particles');
-            container.innerHTML = '';
-            
-            for (let i = 0; i < 50; i++) {
-                const particle = document.createElement('div');
-                particle.className = 'particle';
-                particle.style.left = Math.random() * 100 + '%';
-                particle.style.top = Math.random() * 100 + '%';
-                particle.style.width = Math.random() * 4 + 1 + 'px';
-                particle.style.height = particle.style.width;
-                particle.style.background = currentReality.particleColor;
-                particle.style.animation = `float ${10 + Math.random() * 20}s linear infinite`;
-                particle.style.animationDelay = Math.random() * 10 + 's';
-                container.appendChild(particle);
-            }
-        }
-
-        function showTrueEnding() {
-            document.body.innerHTML = `
-                <div class="true-ending">
-                    <h1 style="color: #8A2BE2; font-size: 3em; margin-bottom: 30px;">Бесконечная петля разрывается</h1>
-                    
-                    <div style="max-width: 800px; text-align: center; line-height: 1.8; font-size: 1.2em;">
-                        <p>Реальность #20. Простое число. Ключ.</p>
-                        <p style="margin: 20px 0;">Ты помнишь всё теперь.</p>
-                        
-                        <p style="color: #FFD700; margin: 30px 0;">
-                            952 год. Изначальная временная линия.<br>
-                            Ты умирал в его объятиях.<br>
-                            "Я найду способ," обещал Радогост.<br>
-                            "Даже если потребуются бесконечные жизни."
-                        </p>
-                        
-                        <p class="meta-text" style="margin: 30px 0; font-size: 1.1em;">
-                            Он заключил сделку с чем-то за гранью богов и демонов.<br>
-                            Каждая смерть — новая реальность. Каждая реальность — новый шанс.<br>
-                            Он помнит их все. Бремя бесконечной любви.
-                        </p>
-                        
-                        <p style="margin: 30px 0;">
-                            Но теперь и ты помнишь.<br>
-                            Петля может закончиться.<br>
-                            Если ты выберешь.
-                        </p>
-                        
-                        <div style="margin-top: 40px;">
-                            <button onclick="chooseFinalFate('together')" style="padding: 15px 30px; margin: 10px; background: #8A2BE2; border: none; color: white; font-size: 1.1em; border-radius: 5px; cursor: pointer;">
-                                Вернуться в изначальную временную линию вместе
-                            </button>
-                            <button onclick="chooseFinalFate('infinite')" style="padding: 15px 30px; margin: 10px; background: #FFD700; border: none; color: black; font-size: 1.1em; border-radius: 5px; cursor: pointer;">
-                                Остаться бесконечными, но осознающими
-                            </button>
-                            <button onclick="chooseFinalFate('release')" style="padding: 15px 30px; margin: 10px; background: #8B0000; border: none; color: white; font-size: 1.1em; border-radius: 5px; cursor: pointer;">
-                                Освободить его от обещания
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            `;
-        }
-
-        function chooseFinalFate(choice) {
-            let ending = '';
-            
-            switch(choice) {
-                case 'together':
-                    ending = `
-                        <h2 style="color: #8A2BE2;">Возвращение</h2>
-                        <p>Ты берёшь его руку. Реальность схлопывается в единую точку света.</p>
-                        <p>952 год. Ты умираешь. Но на этот раз ты улыбаешься.</p>
-                        <p>"Я помню," шепчешь ты. "Каждую жизнь. Каждый поцелуй, которого у нас не было."</p>
-                        <p>Радогост плачет. "Тогда ты знаешь—"</p>
-                        <p>"Что ты любил меня достаточно сильно, чтобы сломать саму реальность? Да."</p>
-                        <p>Ты умираешь в его объятиях. Спокойно. Наконец.</p>
-                        <p style="margin-top: 20px; color: #FFD700;">Больше никаких петель. Только один идеальный конец.</p>
-                    `;
-                    break;
-                    
-                case 'infinite':
-                    ending = `
-                        <h2 style="color: #FFD700;">Вечный танец</h2>
-                        <p>Ты выбираешь продолжать прыгать. Но теперь вы оба помните.</p>
-                        <p>Каждая реальность становится новым приключением. Викинги-завоеватели. Космические императоры. Цифровые боги.</p>
-                        <p>Вы находите друг друга быстрее каждый раз. Любите глубже.</p>
-                        <p>Смерть становится просто переходом. Реальность становится вашей площадкой.</p>
-                        <p style="margin-top: 20px; color: #8A2BE2;">Вечность — просто другое слово для любви.</p>
-                    `;
-                    break;
-                    
-                case 'release':
-                    ending = `
-                        <h2 style="color: #8B0000;">Освобождение</h2>
-                        <p>"Ты свободен," говоришь ты ему. "Больше не надо смотреть как я умираю."</p>
-                        <p>Радогост качает головой. "Любовь так не работает."</p>
-                        <p>"Тогда сделаем по-другому. Без петель. Без сделок. Просто—"</p>
-                        <p>"Просто мы. Что бы это ни значило."</p>
-                        <p>Реальность становится необязательной. Вы существуете в пространствах между.</p>
-                        <p style="margin-top: 20px; color: #8A2BE2;">Не живые. Не мёртвые. Просто вместе.</p>
-                    `;
-                    break;
-            }
-            
-            document.body.innerHTML = `
-                <div class="true-ending">
-                    <div style="max-width: 600px; text-align: center; line-height: 1.8; font-size: 1.1em;">
-                        ${ending}
-                        <div style="margin-top: 50px;">
-                            <p style="color: #666; font-size: 0.9em;">Спасибо за игру в Бесконечный Муром</p>
-                            <p style="color: #666; font-size: 0.9em;">Любовь превосходит код</p>
-                            <button onclick="fullReset()" style="margin-top: 20px; padding: 10px 20px; background: transparent; border: 1px solid #666; color: #666; cursor: pointer;">
-                                Начать заново (Полный сброс)
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            `;
-        }
-
-        function fullReset() {
-            localStorage.removeItem('infiniteMurom');
-            location.reload();
-        }
-
-        // Глобальные функции
-        window.respawn = respawn;
-        window.chooseFinalFate = chooseFinalFate;
-        window.fullReset = fullReset;
-
-        // Запуск игры
-        initGame();
-
-        // Анимация частиц
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes float {
-                from { transform: translateY(100vh) scale(0); }
-                to { transform: translateY(-100px) scale(1); }
-            }
-        `;
-        document.head.appendChild(style);
     </script>
 </body>
 </html>
+
